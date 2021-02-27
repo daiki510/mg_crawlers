@@ -1,0 +1,28 @@
+{
+  "name": "mg_crawlers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daiki510/mg_crawlers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daiki510/mg_crawlers/issues"
+  },
+  "homepage": "https://github.com/daiki510/mg_crawlers#readme",
+  "devDependencies": {
+    "typescript": "^4.2.2"
+  },
+  "dependencies": {
+    "@types/node": "^14.14.31"
+  }
+}
