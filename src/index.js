@@ -21,23 +21,32 @@ const crawling = async () => {
     const page = await browser.newPage();
     await page.setViewport(screenSize);
     
-    const url = 'https://manga1000.com/'
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    const topPageUrl = 'https://manga1000.com/'
+    await page.goto(topPageUrl, { waitUntil: 'networkidle0' });
 
     for (let manga of mangaList) {
-      let row = {};
-      Logger.error(`「${manga.title}」をクローリング中...`);
-      row.title = manga.title;
-      //漫画の検索
-      await search(page, manga);
-      
-      //検索結果より対象の漫画リンクへ遷移
-      await crawlingList(page, manga);
-      // throw new Error ('テストエラー')
+      try {
+        let row = {};
+        logger.info(`「${manga.title}」をクローリング中...`);
+        row.title = manga.title;
+        //漫画の検索
+        await search(page, manga);
+        
+        //検索結果より対象の漫画リンクへ遷移
+        await crawlingList(page, manga);
+        // throw new Error ('テストエラー')
 
-      //漫画内の一覧ページのクローリング
-      await crawlingDetail(page, row)
-      logger.info(`「${manga.title}」のクローリング処理完了！`);
+        //漫画内の一覧ページのクローリング
+        await crawlingDetail(page, row)
+
+        logger.info(`「${manga.title}」のクローリング処理完了！`);
+      } catch (e) {
+        errorLogger.error(`「${manga.title}」の収集に失敗しました`);
+        errorLogger.error(e);
+        // continue;
+      } finally {
+        await page.goto(topPageUrl, { waitUntil: 'networkidle0' });
+      }
     }
     logger.info(rows);
     
