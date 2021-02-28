@@ -1,6 +1,10 @@
 "use strict";
 const puppeteer  = require('puppeteer');
-const headless = false;
+const Log4js = require("log4js");
+Log4js.configure("log-config.json");
+const logger = Log4js.getLogger("system");
+const errorLogger = Log4js.getLogger("error");
+const headless = true;
 const screenSize = {width: 1920, height: 1080};
 const slowMo = 0;
 const args = [
@@ -11,36 +15,48 @@ const mangaList = require('./mangaList');
 let rows = [];
 
 const crawling = async () => {
-  console.log('=================start===================');
+  logger.info('=============クローリングを開始します=============');
   const browser = await puppeteer.launch({headless, slowMo, args});
   try {
     const page = await browser.newPage();
     await page.setViewport(screenSize);
     
-    const url = 'https://manga1000.com/'
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    const topPageUrl = 'https://manga1000.com/'
+    await page.goto(topPageUrl, { waitUntil: 'networkidle0' });
 
     for (let manga of mangaList) {
-      let row = {};
-      row.title = manga.title;
-      //漫画の検索
-      await search(page, manga);
-      
-      //検索結果より対象の漫画リンクへ遷移
-      await crawlingList(page, manga);
+      try {
+        let row = {};
+        logger.info(`「${manga.title}」をクローリング中...`);
+        row.title = manga.title;
+        //漫画の検索
+        await search(page, manga);
+        
+        //検索結果より対象の漫画リンクへ遷移
+        await crawlingList(page, manga);
+        // throw new Error ('テストエラー')
 
-      //漫画内の一覧ページのクローリング
-      await crawlingDetail(page, row)
+        //漫画内の一覧ページのクローリング
+        await crawlingDetail(page, row)
+
+        logger.info(`「${manga.title}」のクローリング処理完了！`);
+      } catch (e) {
+        errorLogger.error(`「${manga.title}」の収集に失敗しました`);
+        errorLogger.error(e);
+        // continue;
+      } finally {
+        await page.goto(topPageUrl, { waitUntil: 'networkidle0' });
+      }
     }
-    console.log(rows);
+    logger.info(rows);
     
     //検索フォームで特定のキーワードにて検索
   } catch (e) {
-    console.log('=============error================');
-    console.log(e);
+    errorLogger.error('=============クローラーが異常終了しました=============');
+    errorLogger.error(e);
   } finally {
     await browser.close();
-    console.log('=================end===================');
+    logger.info('=============クローリングが完了しました=============');
   }
 }
 crawling();

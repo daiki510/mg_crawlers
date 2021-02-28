@@ -14,3 +14,9 @@ package-lock.json
 # storage
 storage/
 
+# Log
+log/
+
+# 一時的にtsconfig
+tsconfig.json
+
