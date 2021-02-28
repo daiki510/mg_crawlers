@@ -12,6 +12,7 @@ const args = [
   '--incognito'
 ];
 const mangaList = require('./mangaList');
+const util = require('./util');
 let rows = [];
 
 const crawling = async () => {
@@ -102,7 +103,7 @@ const crawlingDetail = async (page, row) => {
   const chapterTitle = await(await chapter[0].getProperty('text')).jsonValue();
   const chapterUrl = await(await chapter[0].getProperty('href')).jsonValue();
   row.chapterOrg = chapterTitle;
-  row.chapterNo = getChapterNo(chapterTitle);
+  row.chapterNo = util.getChapterNo(chapterTitle);
   row.chapterUrl = chapterUrl;
   row.detailUrl = page.url();
   rows.push(row);
@@ -117,17 +118,6 @@ const getMangaLink = id => {
   return `#post-${id} > div > div.featured-thumb > a`;
 }
 
-/**
- * チャプタータイトルよりNoを取得する
- * @param {String} text 対象のチャプターの名前
- * @return {String} チャプターNo
- */
-const getChapterNo = text => {
-  const regex = /(?<=【第)(\d+)(?=話】)/g;
-  const results = text.match(regex);
-  return results[0];
-}
-
 const selectors = {
   searchForm: '#sticky-wrapper > div > div > div.search-holder > div > form > input',
   searchButton: '#sticky-wrapper > div > div > div.search-holder > div > form > button',
@@ -136,3 +126,5 @@ const selectors = {
 const xPath = {
   latestChapter: `//div[@class='chaplist']/table[@class='table table-hover']/tbody/tr[1]/td/p/a`
 }
+
+module.exports = crawling;
