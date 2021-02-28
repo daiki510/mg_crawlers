@@ -3,6 +3,7 @@ const puppeteer  = require('puppeteer');
 const Log4js = require("log4js");
 Log4js.configure("log-config.json");
 const logger = Log4js.getLogger("system");
+const errorLogger = Log4js.getLogger("error");
 const headless = true;
 const screenSize = {width: 1920, height: 1080};
 const slowMo = 0;
@@ -25,7 +26,7 @@ const crawling = async () => {
 
     for (let manga of mangaList) {
       let row = {};
-      logger.info(`「${manga.title}」をクローリング中...`);
+      Logger.error(`「${manga.title}」をクローリング中...`);
       row.title = manga.title;
       //漫画の検索
       await search(page, manga);
@@ -42,8 +43,8 @@ const crawling = async () => {
     
     //検索フォームで特定のキーワードにて検索
   } catch (e) {
-    logger.error('=============クローラーが異常終了しました=============');
-    logger.error(e);
+    errorLogger.error('=============クローラーが異常終了しました=============');
+    errorLogger.error(e);
   } finally {
     await browser.close();
     logger.info('=============クローリングが完了しました=============');
