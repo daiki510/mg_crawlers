@@ -17,6 +17,9 @@ jobs:
           name: install dependencies
           command: npm install
       - run:
+          name: install puppeteer
+          command: npm add puppeteer
+      - run:
           name: unit test
           command: npm test
 workflows:
