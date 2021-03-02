@@ -10,6 +10,12 @@ jobs:
       - run:
           name: install dependencies
           command: npm install
+      - run:
+          name: check files
+          command: ls
+      - run:
+          name: check pwd
+          command: pwd
       - save_cache:
           key:  dependency-cache-{{ checksum "package-lock.json" }}
           paths:
