@@ -1,3 +1,4 @@
+const puppeteer  = require('puppeteer');
 const topPageUrl = 'https://manga1000.com/';
 const selectors = {
   searchForm: '#sticky-wrapper > div > div > div.search-holder > div > form > input',
@@ -11,6 +12,12 @@ const xPath = {
 
 describe('Manga Raw', () => {
   beforeAll(async () => {
+    const browser = await puppeteer.launch(
+        { 
+          args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+        }
+      );
+    const page = await browser.newPage();
     await page.goto(topPageUrl);
   });
 
