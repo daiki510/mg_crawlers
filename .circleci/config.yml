@@ -1,26 +1,6 @@
 version: 2.1
 jobs:
-  build:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install dependencies
-          command: npm install
-      - run:
-          name: check files
-          command: ls
-      - run:
-          name: check pwd
-          command: pwd
-      - save_cache:
-          key:  dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-  test:
+  build-test:
     docker:
       - image: circleci/node:14
     steps:
@@ -44,9 +24,3 @@ jobs:
             ./cc-test-reporter before-build
             npm test
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - test
