@@ -1,4 +1,7 @@
 version: 2.1
+env:
+  global:
+    - CC_TEST_REPORTER_ID=beefda0dd19af38a0fb9b647875d38d2a4389be8b025afdae563b23b0951282b
 jobs:
   build:
     docker:
