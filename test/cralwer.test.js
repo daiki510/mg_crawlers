@@ -12,12 +12,12 @@ const xPath = {
 
 describe('Manga Raw', () => {
   beforeAll(async () => {
-    const browser = await puppeteer.launch(
-        { 
-          args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-        }
-      );
-    const page = await browser.newPage();
+    // const browser = await puppeteer.launch(
+    //     { 
+    //       args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+    //     }
+    //   );
+    // const page = await browser.newPage();
     await page.goto(topPageUrl);
   });
 
