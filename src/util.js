@@ -6,7 +6,7 @@
 const getChapterNo = text => {
   const regex = /(?<=【第)(\d+)(?=話】)/g;
   const results = text.match(regex);
-  return results[0];
+  return results ? results[0] : '';
 }
 
 module.exports = {
