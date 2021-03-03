@@ -31,6 +31,9 @@ jobs:
           name: install dependencies
           command: npm install
       - run:
+          name: install libraries
+          command: apt-get install -y libgtk-3.0 libgbm-dev libnss3 libatk-bridge2.0-0 libasound2
+      - run:
           name: unit test
           command: npm test
 workflows:
