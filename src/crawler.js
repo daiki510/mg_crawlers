@@ -13,6 +13,7 @@ const args = [
 ];
 const mangaList = require('./mangaList');
 const util = require('./util');
+const transmitter = require('./transmitter');
 let rows = [];
 
 const crawling = async () => {
@@ -39,17 +40,28 @@ const crawling = async () => {
 
         //漫画内の一覧ページのクローリング
         await crawlingDetail(page, row)
-
-        logger.info(`「${manga.title}」のクローリング処理完了！`);
+        .then(async row => {
+          try {
+            // APIに収集したデータ送信
+            const results = await transmitter(row);
+            if (results) {
+              throw new Error ('=========エラー================')
+            }
+          } catch (e) {
+            errorLogger.error(`「${manga.title}」の登録に失敗しました`);
+            errorLogger.error(e);
+          }
+        })
       } catch (e) {
         errorLogger.error(`「${manga.title}」の収集に失敗しました`);
         errorLogger.error(e);
-        // continue;
       } finally {
+        logger.info(`「${manga.title}」のクローリング処理完了！`);
         await page.goto(topPageUrl, { waitUntil: 'networkidle0' });
       }
     }
     logger.info(rows);
+
     
     //検索フォームで特定のキーワードにて検索
   } catch (e) {
