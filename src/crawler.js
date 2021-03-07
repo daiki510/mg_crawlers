@@ -12,8 +12,8 @@ const args = [
   '--incognito'
 ];
 const mangaList = require('./mangaList');
-const util = require('./util');
-const transmitter = require('./transmitter');
+const util = require('./lib/util');
+const transmitter = require('./lib/transmitter');
 let rows = [];
 
 const crawling = async () => {

@@ -1,4 +1,4 @@
-const util = require('../src/util');
+const util = require('../src/lib/util');
 
 describe('test util', () => {
   it('チャプターNoが正常に取得できる', () => {
