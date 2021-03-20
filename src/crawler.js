@@ -119,6 +119,7 @@ const crawlingDetail = async (page, row) => {
   row.chapterUrl = chapterUrl;
   row.detailUrl = page.url();
   rows.push(row);
+  return row
 }
 
 /**
