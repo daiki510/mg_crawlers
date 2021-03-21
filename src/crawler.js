@@ -43,10 +43,7 @@ const crawling = async () => {
         .then(async row => {
           try {
             // APIに収集したデータ送信
-            const results = await transmitter(row);
-            if (results) {
-              throw new Error ('=========エラー================')
-            }
+            await transmitter(row); 
           } catch (e) {
             errorLogger.error(`「${manga.title}」の登録に失敗しました`);
             errorLogger.error(e);

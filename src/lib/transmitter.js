@@ -9,23 +9,27 @@ const host = 'http://127.0.0.1:3001/api/v1/';
 
 const transmitter = async(row) => {
   const data = JSON.stringify(util.toUnderscoreCaseObject(row));
+  console.log('============data==============')
+  console.log(data)
   const URL = host + 'comics';
-  await request.post({
+  const options = {
     uri: URL,
-    headers: {'Content-type': 'application/json'},
-    json: data
-  }, function(err, res, data){
-    //TODO:レスポンスを受け取れるようにする
-    console.log('============err==============')
-    console.log(err)
-    if (err) {
-      return true
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: data
+  }
+  await request.post(options, function(err, res, data){
+    //TODO:ログが出力されるようにする
+    if (data.error) {
+      throw new Error (data.error)
     }
-    console.log('============res==============')
-    console.log(res)
-    console.log('============data==============')
-    console.log(data)
-    return false
+    if (data.status === 201) {
+      logger.info(`「${manga.title}」の最新話を登録しました！`);
+    }
+    if (data.status === 304) {
+      logger.info(`「${manga.title}」の更新はありませんでした`);
+    }
   });
 }
 
